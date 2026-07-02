@@ -113,6 +113,22 @@ export const projects = [
     link: 'https://github.com/Muhammadatef/kakashi',
   },
   {
+    name: 'AWS Retail Data ETL Pipeline',
+    kind: 'Cloud · AWS',
+    description:
+      'Production-grade ETL pipeline on AWS for retail data processing, demonstrating end-to-end data engineering on cloud infrastructure.',
+    tech: ['AWS', 'S3', 'Glue', 'Redshift', 'Lambda', 'Python'],
+    link: 'https://github.com/Muhammadatef/AWS-Retail-Data-ETL-Pipeline',
+  },
+  {
+    name: 'Covid-19 Analysis Using Azure',
+    kind: 'Cloud · Azure',
+    description:
+      'End-to-end data engineering solution on Azure for COVID-19 data analysis, showcasing Azure Data Factory, Databricks, and analytics workflows.',
+    tech: ['Azure', 'Data Factory', 'Databricks', 'Data Lake', 'Python'],
+    link: 'https://github.com/Muhammadatef/Covid-19-Analysis-Using-Azure',
+  },
+  {
     name: 'EPL Analytics Platform',
     kind: 'Football analytics',
     description:
@@ -135,6 +151,22 @@ export const projects = [
       'End-to-end pipeline for Arsenal FC data — scraping, modeling and analysis. Written up as a walkthrough on Medium.',
     tech: ['Python', 'Airflow', 'PostgreSQL', 'Docker'],
     link: 'https://github.com/Muhammadatef/ArsenalFC-Data-Pipeline-Project',
+  },
+  {
+    name: 'Dimensional Modeling Practical Guide',
+    kind: 'Educational · Data Warehousing',
+    description:
+      'Comprehensive practical guide to dimensional modeling with real-world examples, star schemas, and best practices for data warehouse design.',
+    tech: ['Data Modeling', 'Star Schema', 'Kimball', 'SQL'],
+    link: 'https://github.com/Muhammadatef/Dimensional-Modeling-Practiical-guide',
+  },
+  {
+    name: 'Spark Demos & Learning Resources',
+    kind: 'Educational · Big Data',
+    description:
+      'Collection of Apache Spark demos, important notes, and practical examples for mastering distributed data processing (Garage Education + Spark Recap).',
+    tech: ['Apache Spark', 'PySpark', 'Scala', 'Big Data'],
+    link: 'https://github.com/Muhammadatef/Garage-Education-Spark-Demos',
   },
   {
     name: 'DE Roadmap for Arabic Speakers',
