@@ -243,6 +243,23 @@ export function CertificatesAnswer() {
           </div>
         ))}
       </div>
+      <Card>
+        <div className="flex items-start gap-2">
+          <Sparkles size={16} className="mt-0.5 flex-shrink-0 text-accent" />
+          <p className="text-sm leading-relaxed text-body">
+            For the complete list of certifications and credentials, check out my{' '}
+            <a
+              href={profile.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-accent underline decoration-accent/30 underline-offset-2 transition hover:decoration-accent"
+            >
+              LinkedIn profile
+            </a>
+            .
+          </p>
+        </div>
+      </Card>
     </div>
   )
 }
