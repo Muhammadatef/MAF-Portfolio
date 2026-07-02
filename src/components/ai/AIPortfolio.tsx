@@ -211,18 +211,21 @@ export default function AIPortfolio() {
             {/* avatar */}
             <div className="relative my-9">
               <div className="absolute inset-0 -z-10 rounded-full bg-accent/20 blur-3xl" />
-              {/* Drop your photo/memoji at public/avatar.png to replace this */}
-              <div className="flex h-36 w-36 items-center justify-center rounded-full border border-line bg-surface font-display text-5xl sm:h-44 sm:w-44">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/avatar.png"
-                  alt=""
-                  className="h-full w-full rounded-full object-cover"
-                  onError={(e) => {
-                    ;(e.target as HTMLImageElement).style.display = 'none'
-                    ;(e.target as HTMLImageElement).parentElement!.append('🥷')
-                  }}
-                />
+              <div className="flex h-36 w-36 items-center justify-center rounded-full border-2 border-accent/30 bg-gradient-to-br from-surface to-ink p-1 shadow-xl sm:h-44 sm:w-44">
+                <div className="h-full w-full overflow-hidden rounded-full border-2 border-line/50 bg-surface">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/avatar.png"
+                    alt="Mohamed Atef Fahmy"
+                    className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                    onError={(e) => {
+                      ;(e.target as HTMLImageElement).style.display = 'none'
+                      const parent = (e.target as HTMLImageElement).parentElement!
+                      parent.classList.add('flex', 'items-center', 'justify-center', 'font-display', 'text-5xl')
+                      parent.append('🥷')
+                    }}
+                  />
+                </div>
               </div>
             </div>
 
