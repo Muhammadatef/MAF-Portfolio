@@ -6,6 +6,7 @@ import {
   projects,
   skills,
   certifications,
+  achievements,
   bootcamp,
 } from '@/data/profile'
 import {
@@ -18,6 +19,9 @@ import {
   MapPin,
   Sparkles,
   BookOpen,
+  Trophy,
+  TrendingUp,
+  Star,
 } from 'lucide-react'
 
 export type TopicKey =
@@ -27,6 +31,7 @@ export type TopicKey =
   | 'experience'
   | 'bootcamp'
   | 'certificates'
+  | 'achievements'
   | 'fun'
   | 'contact'
   | 'resume'
@@ -264,6 +269,38 @@ export function CertificatesAnswer() {
   )
 }
 
+export function AchievementsAnswer() {
+  return (
+    <div className="space-y-3">
+      <p className="answer-lead">Key professional achievements:</p>
+      <div className="grid gap-3 sm:grid-cols-2">
+        {achievements.map((achievement) => (
+          <Card key={achievement.title}>
+            <div className="flex items-start gap-3">
+              <div className="rounded-lg bg-accent/10 p-2">
+                <Trophy size={20} className="text-accent" />
+              </div>
+              <div className="flex-1">
+                <div className="mb-1 font-display text-base font-semibold text-bright">
+                  {achievement.title}
+                </div>
+                <div className="mb-2 flex items-center gap-2 text-xs">
+                  <span className="font-medium text-accent">{achievement.organization}</span>
+                  <span className="text-muted">•</span>
+                  <span className="text-muted">{achievement.year}</span>
+                </div>
+                <p className="text-sm leading-relaxed text-body">
+                  {achievement.description}
+                </p>
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export function FunAnswer() {
   return (
     <div className="space-y-3">
@@ -366,6 +403,8 @@ export function renderTopic(topic: TopicKey, question?: string) {
       return <BootcampAnswer />
     case 'certificates':
       return <CertificatesAnswer />
+    case 'achievements':
+      return <AchievementsAnswer />
     case 'fun':
       return <FunAnswer />
     case 'contact':
@@ -399,6 +438,10 @@ const routes: { topic: TopicKey; words: string[] }[] = [
   {
     topic: 'certificates',
     words: ['cert', 'dp-203', 'azure certified', 'nanodegree', 'zoomcamp'],
+  },
+  {
+    topic: 'achievements',
+    words: ['achievement', 'accomplishment', 'success', 'optimization', 'performance', 'mentorship', 'impact', 'results'],
   },
   {
     topic: 'contact',

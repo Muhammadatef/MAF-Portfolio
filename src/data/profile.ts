@@ -179,6 +179,33 @@ export const certifications = [
   { name: 'Python Football Data Analysis', org: 'Mckay Johnes' },
 ]
 
+export const achievements = [
+  {
+    title: 'ETL Performance Optimization',
+    organization: 'e& (Etisalat)',
+    year: '2025',
+    description: 'Reduced batch ETL pipeline processing time from 18 hours to 3 hours using SQL and Spark optimization techniques',
+  },
+  {
+    title: 'Development Efficiency Enhancement',
+    organization: 'LigaData',
+    year: '2023',
+    description: 'Developed bash and Python programs reducing data engineering team development time from 5 hours to 1.5 hours per pipeline',
+  },
+  {
+    title: 'Machine Learning Excellence',
+    organization: 'Upwork - Freelance',
+    year: '2022-2023',
+    description: 'Developed and deployed ML models to predict trends with 85% accuracy, earned consistent 5-star feedback for timely deliverables',
+  },
+  {
+    title: 'Mentorship Excellence',
+    organization: 'Open Source Roadmap',
+    year: '2022-present',
+    description: 'Led mentorship programs and workshops for aspiring data engineers, contributing to community growth through hands-on guidance and writing technical articles on Medium',
+  },
+]
+
 export const bootcamp = {
   name: 'MAF Bootcamp',
   url: 'https://mafbootcamp.com',
@@ -213,6 +240,8 @@ PROJECTS: ${projects.map((p) => `${p.name} — ${p.description} ${p.link}`).join
 SKILLS: ${skills.map((s) => `${s.group}: ${s.items.join(', ')}`).join(' | ')}
 
 CERTIFICATIONS: ${certifications.map((c) => c.name).join(', ')}
+
+ACHIEVEMENTS: ${achievements.map((a) => `${a.title} @ ${a.organization} (${a.year}): ${a.description}`).join(' | ')}
 
 BOOTCAMP: ${bootcamp.name} (${bootcamp.url}) — ${bootcamp.headline} ${bootcamp.description} Curriculum: ${bootcamp.curriculum.join(' → ')}
 
