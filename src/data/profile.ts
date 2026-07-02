@@ -22,9 +22,10 @@ export const profile = {
   medium: 'https://medium.com/@muhamedfahmy7474',
   bootcampUrl: 'https://mafbootcamp.com',
   resume: '/resume.pdf',
+  favoriteQuote: "Yesterday I was clever, so I wanted to change the world. Today I'm wise, so I'm changing myself. — Rumi",
   about: [
     "I'm Fahmi — a Senior Data Engineer based in Abu Dhabi with 6+ years of experience turning messy, large-scale data into systems governments and enterprises rely on.",
-    'Today I engineer the data platform behind national economic indicators at the Statistics Centre – Abu Dhabi (SCAD): 95+ production web scraping pipelines feeding CPI and retail price indices, plus MARSAD — a monitoring platform I built to keep them all healthy.',
+    'Today I engineer the data platform behind national economic indicators at the Statistics Centre – Abu Dhabi (SCAD): 95+ production web scraping pipelines feeding CPI and retail price indices.',
     "Before that I optimized telecom-scale Spark pipelines at e& (Etisalat) — including cutting a 16-hour ETL job down to 2 hours — and built enterprise data infrastructure at LigaData.",
     "I'm a why-first learner: I care about the reasoning behind systems, not just the mechanics. Off the keyboard you'll find me at the piano learning Chopin, meditating, watching Arsenal suffer, or writing on Medium.",
   ],
@@ -48,7 +49,6 @@ export const experience = [
     period: '2025 — Present',
     highlights: [
       'Own 95+ production web scraping pipelines feeding national economic indicators (CPI, retail price indices)',
-      'Built MARSAD, a monitoring platform tracking pipeline health, data freshness and scraper failures org-wide',
       'Dimensional modeling and data warehousing for statistical products on a lakehouse stack',
       'Stack: Python, Airflow, Databricks, Delta Lake, Presto/Trino, MySQL, Scrapy, Selenium, Docker',
     ],
@@ -121,14 +121,6 @@ export const projects = [
     link: 'https://github.com/Muhammadatef',
   },
   {
-    name: 'MARSAD',
-    kind: 'Production platform · SCAD',
-    description:
-      'Web scraping monitoring platform watching 95+ national-statistics pipelines: health, freshness, failures and alerting in one place.',
-    tech: ['Python', 'FastAPI', 'Vue', 'MySQL', 'Docker', 'Azure'],
-    link: '',
-  },
-  {
     name: 'MAF Bootcamp',
     kind: 'Education · Abu Dhabi',
     description:
@@ -142,7 +134,7 @@ export const projects = [
     description:
       'End-to-end pipeline for Arsenal FC data — scraping, modeling and analysis. Written up as a walkthrough on Medium.',
     tech: ['Python', 'Airflow', 'PostgreSQL', 'Docker'],
-    link: 'https://github.com/Muhammadatef',
+    link: 'https://github.com/Muhammadatef/ArsenalFC-Data-Pipeline-Project',
   },
   {
     name: 'DE Roadmap for Arabic Speakers',

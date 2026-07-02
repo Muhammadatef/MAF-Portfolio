@@ -79,6 +79,16 @@ export function MeAnswer() {
           {p}
         </p>
       ))}
+      {profile.favoriteQuote && (
+        <Card>
+          <div className="flex items-start gap-2">
+            <Sparkles size={16} className="mt-0.5 flex-shrink-0 text-accent" />
+            <p className="text-sm italic leading-relaxed text-muted">
+              {profile.favoriteQuote}
+            </p>
+          </div>
+        </Card>
+      )}
     </div>
   )
 }
@@ -384,7 +394,7 @@ const routes: { topic: TopicKey; words: string[] }[] = [
   },
   {
     topic: 'me',
-    words: ['who are you', 'about', 'yourself', 'intro', 'fahmi', 'mohamed', 'background', 'who is'],
+    words: ['who are you', 'about', 'yourself', 'intro', 'fahmi', 'mohamed', 'background', 'who is', 'hi', 'hello', 'hey', 'greetings', 'good morning', 'good afternoon', 'good evening', "what's up", 'whats up', 'howdy', 'yo'],
   },
 ]
 
