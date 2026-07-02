@@ -59,8 +59,19 @@ export default function AIPortfolio() {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [thinking, setThinking] = useState(false)
+  const [titleIndex, setTitleIndex] = useState(0)
   const bottomRef = useRef<HTMLDivElement>(null)
   const inChat = messages.length > 0
+
+  // Rotate titles every 3 seconds
+  useEffect(() => {
+    if (!inChat && profile.titles && profile.titles.length > 1) {
+      const interval = setInterval(() => {
+        setTitleIndex((prev) => (prev + 1) % profile.titles.length)
+      }, 3000)
+      return () => clearInterval(interval)
+    }
+  }, [inChat])
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -181,8 +192,18 @@ export default function AIPortfolio() {
               AI Portfolio
             </h1>
             <p className="mt-4 max-w-md text-[15px] leading-relaxed text-body">
-              {profile.title} · {profile.location}. Ask my AI anything about my work,
-              projects or the bootcamp.
+              <motion.span
+                key={titleIndex}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.5 }}
+                className="inline-block font-medium text-accent"
+              >
+                {profile.titles ? profile.titles[titleIndex] : profile.title}
+              </motion.span>{' '}
+              · {profile.location}. Ask my AI anything about my work, projects or the
+              bootcamp.
             </p>
 
             {/* avatar */}

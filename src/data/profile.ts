@@ -7,6 +7,12 @@ export const profile = {
   name: 'Mohamed Atef Fahmy',
   shortName: 'Fahmi',
   title: 'Senior Data Engineer',
+  titles: [
+    'Senior Data Engineer',
+    'Certified Azure Data Engineer',
+    'Football Data Engineer',
+    'Web Scraping Expert',
+  ],
   location: 'Abu Dhabi, UAE',
   tagline:
     'I build data platforms that national statistics run on — and I teach others to do the same.',
@@ -23,11 +29,13 @@ export const profile = {
     "I'm a why-first learner: I care about the reasoning behind systems, not just the mechanics. Off the keyboard you'll find me at the piano learning Chopin, meditating, watching Arsenal suffer, or writing on Medium.",
   ],
   fun: [
-    "⚽ Die-hard Arsenal fan — I channel the pain into football analytics projects (EPL platform, computer-vision player tracking).",
+    "⚽ Die-hard Arsenal fan — I merge football with data: studied Beltagy's Game Analysis course, Mckay Johnes' Python Football Analysis, built EPL Analytics Platform & Arsenal ETL pipeline.",
     '🍥 Naruto fan — my open-source privacy tool is literally named Kakashi, after the Copy Ninja who hides what matters.',
-    '🎹 Learning piano on a Roland FP-10, slowly working toward Chopin.',
+    '🎹 Learning piano on a Roland FP-10, slowly working toward Chopin and exploring cinema music.',
+    '📚 Constant learner: reading books, writing reflective and technical articles on Medium (English & Arabic).',
     '🧘 Daily meditation practice — I even wrote about how it made me a better data engineer.',
-    '✍️ I write reflective and technical pieces on Medium, in English and Arabic.',
+    '💪 Regular gym-goer — balancing the sedentary data engineering life.',
+    '🎬 Anime and cinema music enthusiast.',
   ],
 }
 
@@ -175,6 +183,8 @@ export const certifications = [
   { name: 'Data Engineering Zoomcamp', org: 'DataTalks.Club' },
   { name: 'AWS Data Engineering Nanodegree', org: 'Udacity' },
   { name: 'Data Streaming Nanodegree', org: 'Udacity' },
+  { name: 'Game Analysis Course', org: 'Beltagy Football Analysis Services' },
+  { name: 'Python Football Data Analysis', org: 'Mckay Johnes' },
 ]
 
 export const bootcamp = {
