@@ -1,38 +1,27 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import './globals.css'
-import { ThemeProvider } from '@/components/ThemeProvider'
 
 export const metadata: Metadata = {
-  title: 'Mohamed Atef Fahmy - Data Engineering Portfolio',
-  description: 'Senior Data Engineer specializing in Spark, Hadoop, Python, and cloud-based data solutions. 5+ years experience in building scalable data pipelines and analytics systems.',
-  keywords: 'Data Engineering, Data Science, Python, Spark, Hadoop, AWS, Azure, SQL, ETL, Big Data, Analytics, Machine Learning',
+  title: 'Mohamed Atef Fahmy — AI Portfolio',
+  description:
+    'Interactive AI portfolio of Mohamed Atef Fahmy (Fahmi), Senior Data Engineer in Abu Dhabi. Ask about his projects, experience, skills, and his 4-month Data Engineering bootcamp.',
+  keywords:
+    'Data Engineering, AI Portfolio, Abu Dhabi, Spark, Airflow, Kafka, Databricks, Python, Bootcamp, MAF',
   authors: [{ name: 'Mohamed Atef Fahmy' }],
-  creator: 'Mohamed Atef Fahmy',
-  publisher: 'Mohamed Atef Fahmy',
-  robots: 'index, follow',
-  viewport: 'width=device-width, initial-scale=1',
   openGraph: {
-    title: 'Mohamed Atef Fahmy - Data Engineering Portfolio',
-    description: 'Senior Data Engineer with expertise in building scalable data solutions',
-    url: 'https://muhammadatef.github.io/portfolio',
-    siteName: 'Mohamed Atef Portfolio',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Mohamed Atef Fahmy - Data Engineering Portfolio',
-      },
-    ],
+    title: 'Mohamed Atef Fahmy — AI Portfolio',
+    description:
+      'Ask my AI anything about my work, projects, and the MAF Data Engineering Bootcamp in Abu Dhabi.',
+    siteName: 'MAF — AI Portfolio',
     locale: 'en_US',
     type: 'website',
   },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Mohamed Atef Fahmy - Data Engineering Portfolio',
-    description: 'Senior Data Engineer with expertise in building scalable data solutions',
-    images: ['/og-image.png'],
-  },
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#0a0a0f',
 }
 
 export default function RootLayout({
@@ -41,12 +30,16 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="font-sans antialiased">
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
-      </body>
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body>{children}</body>
     </html>
   )
 }
