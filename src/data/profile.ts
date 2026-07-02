@@ -27,7 +27,7 @@ export const profile = {
     "I'm Fahmi — a Senior Data Engineer based in Abu Dhabi with 6+ years of experience turning messy, large-scale data into systems governments and enterprises rely on.",
     'Today I engineer the data platform behind national economic indicators at the Statistics Centre – Abu Dhabi (SCAD): 95+ production web scraping pipelines feeding CPI and retail price indices.',
     "Before that I optimized telecom-scale Spark pipelines at e& (Etisalat) — including cutting a 16-hour ETL job down to 2 hours — and built enterprise data infrastructure at LigaData.",
-    "I'm a why-first learner: I care about the reasoning behind systems, not just the mechanics. Off the keyboard you'll find me at the piano learning Chopin, meditating, watching Arsenal suffer, or writing on Medium.",
+    "I'm a why-first learner: I care about the reasoning behind systems, not just the mechanics. Off the keyboard you'll find me at the piano learning Chopin, meditating, watching Arsenal each weekend, or writing on Medium.",
   ],
   fun: [
     "⚽ Die-hard Arsenal fan — I merge football with data: studied Beltagy's Game Analysis course, Mckay Johnes' Python Football Analysis, built EPL Analytics Platform & Arsenal ETL pipeline.",
