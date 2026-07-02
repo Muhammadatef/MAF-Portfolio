@@ -2,12 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    --color-ink: 255 255 255;      /* white background */
+    --color-surface: 249 250 251;  /* light gray cards */
+    --color-line: 229 231 235;     /* light borders */
+    --color-accent: 0 212 255;     /* cyan */
+    --color-bright: 17 24 39;      /* dark text for headings */
+    --color-body: 55 65 81;        /* dark body text */
+    --color-muted: 107 114 128;    /* muted text */
+  }
+
+  .dark {
+    --color-ink: 10 10 15;         /* dark background */
+    --color-surface: 18 18 28;     /* dark cards */
+    --color-line: 35 35 58;        /* dark borders */
+    --color-accent: 0 212 255;     /* cyan (same) */
+    --color-bright: 238 240 248;   /* light text for headings */
+    --color-body: 184 189 208;     /* light body text */
+    --color-muted: 125 130 153;    /* muted text */
+  }
+}
+
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  @apply bg-ink text-body antialiased;
+  @apply antialiased;
+  background-color: rgb(var(--color-ink));
+  color: rgb(var(--color-body));
 }
 
 .answer-lead {

@@ -20,6 +20,7 @@ import {
 } from 'lucide-react'
 import { profile } from '@/data/profile'
 import { renderTopic, routeQuestion, TopicKey, FallbackAnswer } from './answers'
+import ThemeToggle from '../ThemeToggle'
 
 type Message = {
   id: number
@@ -146,6 +147,7 @@ export default function AIPortfolio() {
           MAF
         </button>
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           <a
             href={profile.github}
             target="_blank"

@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class',
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -8,14 +9,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        ink: '#0a0a0f',      // page background
-        surface: '#12121c',  // cards
-        line: '#23233a',     // borders
-        accent: '#00d4ff',   // pipeline cyan
+        ink: 'rgb(var(--color-ink) / <alpha-value>)',
+        surface: 'rgb(var(--color-surface) / <alpha-value>)',
+        line: 'rgb(var(--color-line) / <alpha-value>)',
+        accent: 'rgb(var(--color-accent) / <alpha-value>)',
         violet: '#a78bfa',
-        bright: '#eef0f8',   // headings / strong text
-        body: '#b8bdd0',     // body text
-        muted: '#7d8299',    // secondary text
+        bright: 'rgb(var(--color-bright) / <alpha-value>)',
+        body: 'rgb(var(--color-body) / <alpha-value>)',
+        muted: 'rgb(var(--color-muted) / <alpha-value>)',
       },
       fontFamily: {
         display: ["'Space Grotesk'", 'sans-serif'],
