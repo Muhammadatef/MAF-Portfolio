@@ -10,6 +10,7 @@ export const profile = {
   titles: [
     'Senior Data Engineer',
     'Certified Azure Data Engineer',
+    'Certified Databricks Data Engineer',
     'Football Data Engineer',
     'Web Scraping Expert',
   ],
@@ -46,9 +47,12 @@ export const experience = [
     company: 'Statistics Centre – Abu Dhabi (SCAD)',
     via: 'via Reach Employment Services',
     location: 'Abu Dhabi, UAE',
-    period: '2025 — Present',
+    period: 'Sep 2025 — Present',
     highlights: [
-      'Own 95+ production web scraping pipelines feeding national economic indicators (CPI, retail price indices)',
+      'Own 95+ production web scraping pipelines feeding national economic indicators (CPI, retail price indices) into DWH and Delta Lake tables',
+      'Built MARSAD/WSMT, a full-stack scraping monitoring platform (FastAPI, Docker, Nginx, Vue.js) with near real-time data quality status, pipeline triggering and failure alerting — cut pipeline failure MTTR by 60%',
+      'Built a synthetic data generation framework (SDV, CTGAN, CopulaGAN, TVAE) for privacy-safe test and model-development datasets',
+      'Mentor junior data engineers across the data engineering function',
       'Dimensional modeling and data warehousing for statistical products on a lakehouse stack',
       'Stack: Python, Airflow, Databricks, Delta Lake, Presto/Trino, MySQL, Scrapy, Selenium, Docker',
     ],
@@ -58,9 +62,10 @@ export const experience = [
     company: 'e& (Etisalat)',
     via: '',
     location: 'Dubai, UAE',
-    period: 'Nov 2024 — 2025',
+    period: 'Oct 2024 — Sep 2025',
     highlights: [
-      'Reduced a core Spark/Scala ETL pipeline runtime from 16 hours to 2 hours',
+      'Re-engineered the Spark/Scala customer segmentation ETL framework, cutting runtime from 16 hours to 2 hours (87.5%) across tens of millions of customer records',
+      'Introduced Delta Lake as the storage layer for reliable, versioned ingestion',
       'Designed real-time and ad-hoc campaign pipelines with Spark, Hive, Impala and HDFS',
       'Maintained a custom ETL framework with dynamic Scala compilation for business logic',
       'Enabled real-time customer segmentation at telecom scale',
@@ -71,11 +76,23 @@ export const experience = [
     company: 'LigaData',
     via: '',
     location: 'Remote — US company',
-    period: 'Oct 2022 — Nov 2024',
+    period: 'Sep 2022 — Oct 2024',
     highlights: [
       'Ingested and transformed large datasets from diverse sources into HDFS',
       'Cut report generation time by 40% by automating workflows with Python, Hive and Power BI',
       'Contributed to a data fabric product on Kubernetes for secure, scalable integration',
+      'Generated telecom business metrics through a business semantic layer',
+    ],
+  },
+  {
+    role: 'Session Lead',
+    company: 'Udacity',
+    via: '',
+    location: 'Cairo, Egypt',
+    period: 'Jul 2023 — Oct 2024',
+    highlights: [
+      'Delivered sessions on programming basics, Python, data analytics, web development, AI and cybersecurity',
+      'Mentored learners with hands-on, personalized guidance',
     ],
   },
   {
@@ -83,7 +100,7 @@ export const experience = [
     company: 'Upwork',
     via: '',
     location: 'Remote',
-    period: 'Jun 2022 — Dec 2023',
+    period: 'Jun 2022 — Aug 2024',
     highlights: [
       'Built web-scraping ETL for large-scale job market data',
       'Deployed ML forecasting models reaching 85% accuracy',
@@ -94,8 +111,8 @@ export const experience = [
     role: 'Data Analyst & Operations',
     company: 'Cube',
     via: '',
-    location: 'Cairo, Egypt',
-    period: 'Aug 2019 — Sep 2021',
+    location: 'El Mansoura, Egypt',
+    period: 'Feb 2019 — Sep 2021',
     highlights: [
       'Automated data processes with Python and SQL, cutting manual work by 40%',
       'Built Power BI dashboards used across the organization',
@@ -185,7 +202,7 @@ export const skills = [
   },
   {
     group: 'Lakehouse & Warehousing',
-    items: ['Databricks', 'Delta Lake', 'Presto / Trino', 'Hive', 'Dimensional modeling (Kimball)', 'MySQL', 'PostgreSQL'],
+    items: ['Databricks (certified)', 'Delta Lake', 'Presto / Trino', 'Hive', 'Dimensional modeling (Kimball)', 'MySQL', 'PostgreSQL'],
   },
   {
     group: 'Cloud & Platform',
@@ -197,12 +214,18 @@ export const skills = [
   },
   {
     group: 'Analytics & ML',
-    items: ['Power BI', 'FastAPI', 'ML forecasting', 'Computer vision (YOLOv8 / ByteTrack)'],
+    items: ['Power BI', 'FastAPI', 'ML forecasting', 'RAG', 'DSPy', 'Synthetic data (SDV / CTGAN)', 'Computer vision (YOLOv8 / ByteTrack)'],
   },
 ]
 
 export const certifications = [
+  { name: 'Databricks Certified Data Engineer Associate', org: 'Databricks' },
   { name: 'Microsoft Azure Data Engineer Associate (DP-203)', org: 'Microsoft' },
+  { name: 'Deploy Workloads with Lakeflow Jobs', org: 'Databricks' },
+  { name: 'Retrieval Augmented Generation (RAG)', org: 'DeepLearning.AI' },
+  { name: 'DSPy: Build and Optimize Agentic Apps', org: 'DeepLearning.AI' },
+  { name: 'Neural Networks and Deep Learning', org: 'DeepLearning.AI' },
+  { name: 'Fundamentals of Deep Learning', org: 'NVIDIA' },
   { name: 'AWS Cloud Practitioner', org: 'Amazon Web Services' },
   { name: 'Data Engineering Zoomcamp', org: 'DataTalks.Club' },
   { name: 'AWS Data Engineering Nanodegree', org: 'Udacity' },
@@ -213,10 +236,16 @@ export const certifications = [
 
 export const achievements = [
   {
+    title: 'Pipeline Reliability',
+    organization: 'Statistics Centre – Abu Dhabi',
+    year: '2026',
+    description: 'Built the MARSAD/WSMT monitoring platform for 95+ production scraping pipelines, reducing pipeline failure MTTR by 60%',
+  },
+  {
     title: 'ETL Performance Optimization',
     organization: 'e& (Etisalat)',
     year: '2025',
-    description: 'Reduced batch ETL pipeline processing time from 18 hours to 3 hours using SQL and Spark optimization techniques',
+    description: 'Re-engineered the customer segmentation Spark/Scala ETL framework, reducing processing time from 16 hours to 2 hours (87.5%)',
   },
   {
     title: 'Development Efficiency Enhancement',
