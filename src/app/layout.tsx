@@ -25,7 +25,12 @@ const mono = JetBrains_Mono({
   display: 'swap',
 })
 
+// Link previews need absolute image URLs. Set NEXT_PUBLIC_SITE_URL if the domain changes.
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://maf-portfolio-one.vercel.app'
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
+  alternates: { canonical: '/' },
   title: 'Mohamed Atef Fahmy — Senior Data Engineer',
   description:
     'Senior Data Engineer in Abu Dhabi. 95+ production pipelines behind a national price index, real-time systems on Kafka and Spark, ML and agent infrastructure. Explore animated architectures or ask my AI.',
@@ -37,8 +42,17 @@ export const metadata: Metadata = {
     description:
       'Data a nation can trust. Animated architectures, real numbers, and an AI version of me you can question.',
     siteName: 'MAF — Portfolio',
+    url: '/',
     locale: 'en_US',
     type: 'website',
+  },
+  // The preview picture itself is src/app/opengraph-image.png and twitter-image.png;
+  // Next.js adds the image tags for both automatically.
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Mohamed Atef Fahmy — Senior Data Engineer',
+    description:
+      'Data a nation can trust. Animated architectures, real numbers, and an AI version of me you can question.',
   },
 }
 

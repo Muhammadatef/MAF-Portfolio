@@ -44,6 +44,20 @@ function Piano() {
     []
   )
 
+  // Mouse and pen play on press. Touch plays on the tap (click): a finger going down
+  // is not a gesture browsers accept for audio, and it also fires while scrolling.
+  // Keyboard activation arrives as a click with detail 0.
+  const keyHandlers = (midi: number) => ({
+    onPointerDown: (e: React.PointerEvent) => {
+      if (e.pointerType !== 'touch') press(midi)
+    },
+    onClick: (e: React.MouseEvent) => {
+      const native = e.nativeEvent as PointerEvent
+      if (e.detail === 0 || native.pointerType === 'touch') press(midi)
+    },
+    style: { touchAction: 'manipulation' as const },
+  })
+
   const stop = useCallback(() => {
     timers.current.forEach((t) => window.clearTimeout(t))
     timers.current = []
@@ -88,8 +102,7 @@ function Piano() {
           {WHITE.map((m) => (
             <button
               key={m}
-              onPointerDown={() => press(m)}
-              onClick={(e) => e.detail === 0 && press(m)}
+              {...keyHandlers(m)}
               aria-label={`Piano key ${m}`}
               className={`h-full flex-1 rounded-b-md border border-black/10 transition-all duration-100 ${
                 down[m] ? 'translate-y-[3px] bg-accent' : 'bg-[#f6f1e6] hover:bg-white'
@@ -99,10 +112,9 @@ function Piano() {
           {BLACK.map((b) => (
             <button
               key={b.midi}
-              onPointerDown={() => press(b.midi)}
-              onClick={(e) => e.detail === 0 && press(b.midi)}
+              {...keyHandlers(b.midi)}
               aria-label={`Piano key ${b.midi}`}
-              style={{ left: `calc(${(b.after + 1) * whiteW}% - ${whiteW * 0.3}%)`, width: `${whiteW * 0.6}%` }}
+              style={{ left: `calc(${(b.after + 1) * whiteW}% - ${whiteW * 0.3}%)`, width: `${whiteW * 0.6}%`, touchAction: 'manipulation' }}
               className={`absolute top-0 h-[60%] rounded-b-md transition-all duration-100 ${
                 down[b.midi] ? 'translate-y-[2px] bg-accent' : 'bg-[#0b1224] hover:bg-[#1a2647]'
               }`}
@@ -116,7 +128,7 @@ function Piano() {
           {playing ? 'Stop' : 'Play a Chopin phrase'}
         </button>
         <span className="font-mono text-[11px] text-muted">
-          click the keys, or type <span className="text-bright">A S D F G H J K</span>
+          tap the keys, or type <span className="text-bright">A S D F G H J K</span>
         </span>
       </div>
     </div>
