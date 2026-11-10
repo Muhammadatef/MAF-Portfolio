@@ -30,7 +30,6 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://maf-portfolio-one.v
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  alternates: { canonical: '/' },
   title: 'Mohamed Atef Fahmy — Senior Data Engineer',
   description:
     'Senior Data Engineer in Abu Dhabi. 95+ production pipelines behind a national price index, real-time systems on Kafka and Spark, ML and agent infrastructure. Explore animated architectures or ask my AI.',
@@ -42,7 +41,7 @@ export const metadata: Metadata = {
     description:
       'Data a nation can trust. Animated architectures, real numbers, and an AI version of me you can question.',
     siteName: 'MAF — Portfolio',
-    url: '/',
+    // no `url` here on purpose: preview caches keyed on og:url would ignore a fresh link like /?v=2
     locale: 'en_US',
     type: 'website',
   },
