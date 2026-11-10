@@ -2,40 +2,128 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ------------------------------------------------------------
+   Palette: midnight navy · ivory · brass, with teal for "data in motion"
+   ------------------------------------------------------------ */
 @layer base {
   :root {
-    --color-ink: 255 255 255;      /* white background */
-    --color-surface: 249 250 251;  /* light gray cards */
-    --color-line: 229 231 235;     /* light borders */
-    --color-accent: 0 212 255;     /* cyan */
-    --color-bright: 17 24 39;      /* dark text for headings */
-    --color-body: 55 65 81;        /* dark body text */
-    --color-muted: 107 114 128;    /* muted text */
+    --color-ink: 247 243 234;      /* ivory paper */
+    --color-surface: 255 253 248;  /* cards */
+    --color-raised: 238 232 219;   /* insets, chips */
+    --color-line: 222 213 196;     /* hairlines */
+    --color-accent: 146 104 30;    /* deep brass */
+    --color-flow: 18 116 108;      /* teal — data in motion */
+    --color-bright: 12 22 48;      /* navy headings */
+    --color-body: 52 62 88;
+    --color-muted: 108 114 132;
   }
 
   .dark {
-    --color-ink: 10 10 15;         /* dark background */
-    --color-surface: 18 18 28;     /* dark cards */
-    --color-line: 35 35 58;        /* dark borders */
-    --color-accent: 0 212 255;     /* cyan (same) */
-    --color-bright: 238 240 248;   /* light text for headings */
-    --color-body: 184 189 208;     /* light body text */
-    --color-muted: 125 130 153;    /* muted text */
+    --color-ink: 8 13 26;          /* midnight navy */
+    --color-surface: 13 20 38;
+    --color-raised: 20 29 52;
+    --color-line: 34 45 74;
+    --color-accent: 214 178 110;   /* brass */
+    --color-flow: 96 200 190;      /* teal */
+    --color-bright: 244 239 228;   /* ivory */
+    --color-body: 184 190 207;
+    --color-muted: 124 134 160;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    @apply font-sans antialiased;
+    background-color: rgb(var(--color-ink));
+    color: rgb(var(--color-body));
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: rgb(var(--color-accent) / 0.3);
+    color: rgb(var(--color-bright));
   }
 }
 
-html {
-  scroll-behavior: smooth;
+@layer components {
+  .answer-lead {
+    @apply text-[15px] leading-relaxed text-bright;
+  }
+
+  .eyebrow {
+    @apply font-mono text-[11px] uppercase tracking-[0.22em] text-accent;
+  }
+
+  .container-x {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  /* card with a cursor-following glow (vars set by <Spotlight>) */
+  .card {
+    @apply relative overflow-hidden rounded-3xl border border-line bg-surface;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s;
+    background: radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, 50%),
+      rgb(var(--color-accent) / 0.13),
+      transparent 60%
+    );
+  }
+  .card:hover::before {
+    opacity: 1;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-ink transition hover:brightness-110 active:scale-[0.98];
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-line bg-surface/60 px-5 py-3 text-sm font-medium text-bright backdrop-blur transition hover:border-accent/60 active:scale-[0.98];
+  }
+
+  .chip {
+    @apply rounded-md border border-line bg-raised/60 px-2 py-0.5 font-mono text-[11px] text-muted;
+  }
 }
 
-body {
-  @apply antialiased;
-  background-color: rgb(var(--color-ink));
-  color: rgb(var(--color-body));
+/* soft grain + vignette behind everything */
+.backdrop-grid {
+  background-image:
+    linear-gradient(rgb(var(--color-line) / 0.35) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--color-line) / 0.35) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 20%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 20%, transparent 75%);
 }
 
-.answer-lead {
-  @apply text-[15px] leading-relaxed text-bright;
+/* marquee */
+.marquee {
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* orbiting stack */
+.orbit {
+  animation: spin360 var(--orbit-duration, 60s) linear infinite;
+}
+.orbit-reverse {
+  animation: spin360 var(--orbit-duration, 60s) linear infinite reverse;
+}
+@keyframes spin360 {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* typing indicator */
@@ -50,14 +138,21 @@ body {
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
+.thin-scrollbar { scrollbar-width: thin; scrollbar-color: rgb(var(--color-line)) transparent; }
+.thin-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+.thin-scrollbar::-webkit-scrollbar-thumb { background: rgb(var(--color-line)); border-radius: 6px; }
+
 :focus-visible {
-  outline: 2px solid #00d4ff;
+  outline: 2px solid rgb(var(--color-accent));
   outline-offset: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+  .packet { display: none; }
 }

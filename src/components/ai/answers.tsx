@@ -6,6 +6,7 @@ import {
   projects,
   skills,
   certifications,
+  education,
   achievements,
   bootcamp,
 } from '@/data/profile'
@@ -105,7 +106,7 @@ export function ProjectsAnswer() {
         Here&apos;s what I&apos;ve been building — from open source to national-scale
         production systems:
       </p>
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid gap-3">
         {projects.map((p) => (
           <Card key={p.name}>
             <div className="mb-1 font-mono text-[11px] uppercase tracking-wider text-accent">
@@ -222,8 +223,8 @@ export function BootcampAnswer() {
             </span>
           ))}
         </div>
-        <LinkBtn href={bootcamp.url}>
-          <GraduationCap size={14} /> mafbootcamp.com
+        <LinkBtn href={`mailto:${profile.email}?subject=MAF%20Bootcamp`}>
+          <GraduationCap size={14} /> Ask me about the next cohort
         </LinkBtn>
       </Card>
     </div>
@@ -233,9 +234,9 @@ export function BootcampAnswer() {
 export function CertificatesAnswer() {
   return (
     <div className="space-y-3">
-      <p className="answer-lead">Certifications I hold:</p>
+      <p className="answer-lead">My education and the certifications I hold:</p>
       <div className="space-y-2">
-        {certifications.map((c) => (
+        {education.concat(certifications).map((c) => (
           <div
             key={c.name}
             className="flex items-center gap-3 rounded-xl border border-line bg-surface px-4 py-3"
@@ -273,7 +274,7 @@ export function AchievementsAnswer() {
   return (
     <div className="space-y-3">
       <p className="answer-lead">Key professional achievements:</p>
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid gap-3">
         {achievements.map((achievement) => (
           <Card key={achievement.title}>
             <div className="flex items-start gap-3">
@@ -331,7 +332,7 @@ export function ContactAnswer() {
       <p className="answer-lead">
         Always happy to talk data, football analytics or the bootcamp. Reach me here:
       </p>
-      <div className="grid gap-2 sm:grid-cols-2">
+      <div className="grid gap-2">
         {links.map((l) => (
           <a
             key={l.label}
@@ -425,7 +426,7 @@ const routes: { topic: TopicKey; words: string[] }[] = [
   },
   {
     topic: 'projects',
-    words: ['project', 'kakashi', 'epl', 'marsad', 'arsenal', 'built', 'build', 'github', 'open source', 'portfolio'],
+    words: ['project', 'kakashi', 'epl', 'marsad', 'arsenal', 'gunners', 'synthetic', 'clickstream', 'built', 'build', 'github', 'open source', 'portfolio'],
   },
   {
     topic: 'experience',

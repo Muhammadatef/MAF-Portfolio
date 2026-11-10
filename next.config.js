@@ -1,44 +1,20 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Remove output: 'export' for Vercel - it handles this automatically
+  // Lets a verification build go to its own folder so it never clobbers a running `next dev`
+  distDir: process.env.NEXT_DIST_DIR || '.next',
   images: {
-    unoptimized: true, // Keep this for better performance on Vercel
+    unoptimized: true,
   },
-  // Remove assetPrefix and basePath - not needed for Vercel
   env: {
     GITHUB_USERNAME: 'Muhammadatef',
     GITHUB_TOKEN: process.env.GITHUB_TOKEN,
   },
-  // Add experimental features for better Vercel compatibility
   experimental: {
     serverComponentsExternalPackages: ['nodemailer'],
+    // tree-shake the big icon packs so only the logos in use are shipped
+    optimizePackageImports: ['react-icons', 'lucide-react'],
   },
-  // Disable ALL optimizations to fix build errors
-  swcMinify: false,
-  compiler: {
-    // Disable CSS optimization completely
-    removeConsole: false,
-  },
-  // Disable CSS optimization completely
-  webpack: (config, { isServer, dev }) => {
-    // Remove all CSS optimization plugins
-    config.optimization.minimizer = config.optimization.minimizer.filter(
-      (plugin) => 
-        plugin.constructor.name !== 'CssMinimizerPlugin' &&
-        plugin.constructor.name !== 'OptimizeCSSAssetsPlugin'
-    );
-    
-    // Disable CSS optimization in production
-    if (!dev) {
-      config.optimization.minimize = false;
-    }
-    
-    return config;
-  },
-  // Disable source maps and other optimizations
-  productionBrowserSourceMaps: false,
   poweredByHeader: false,
-  compress: false,
 }
 
 module.exports = nextConfig

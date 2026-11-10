@@ -1,5 +1,5 @@
-import AIPortfolio from '@/components/ai/AIPortfolio'
+import Portfolio from '@/components/site/Portfolio'
 
 export default function Home() {
-  return <AIPortfolio />
+  return <Portfolio />
 }
