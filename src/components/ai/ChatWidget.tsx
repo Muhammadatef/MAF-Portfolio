@@ -81,7 +81,8 @@ function Avatar({ size }: { size: number }) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src="/avatar.jpg"
+      src="/avatar-168.webp"
+      decoding="async"
       alt=""
       width={size}
       height={size}
@@ -102,8 +103,12 @@ export default function ChatWidget() {
   const [hint, setHint] = useState<string | null>(null)
   const [moved, setMoved] = useState(false)
   const seenHints = useRef<Record<string, boolean>>({})
-  const bottomRef = useRef<HTMLDivElement>(null)
+  const listRef = useRef<HTMLDivElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  // phone / touch-first device: full-screen sheet, no drag, no auto-keyboard
+  const [touch, setTouch] = useState(false)
+  useEffect(() => setTouch(window.matchMedia('(pointer: coarse), (max-width: 639px)').matches), [])
   const boundsRef = useRef<HTMLDivElement>(null)
   const thinkingRef = useRef(false)
 
@@ -119,12 +124,13 @@ export default function ChatWidget() {
     setTimeout(() => {
       setMessages((m) => [...m, { id: nextId++, role: 'assistant', topic }])
       setBusy(false)
-    }, 550)
+    }, 320)
   }, [])
 
   const askFree = async (q: string) => {
     if (!q.trim() || thinkingRef.current) return
     setInput('')
+    if (touch) inputRef.current?.blur() // drop the keyboard so the answer has room
     setBusy(true)
     setMessages((m) => [...m, { id: nextId++, role: 'user', text: q }])
 
@@ -133,7 +139,7 @@ export default function ChatWidget() {
       setTimeout(() => {
         setMessages((m) => [...m, { id: nextId++, role: 'assistant', topic }])
         setBusy(false)
-      }, 550)
+      }, 320)
       return
     }
 
@@ -204,18 +210,56 @@ export default function ChatWidget() {
 
   useEffect(() => {
     if (!open) return
-    const t = setTimeout(() => inputRef.current?.focus(), 250)
+    // Tells the page the chat is up: locks background scroll on phones and pauses the hero canvas.
+    document.documentElement.dataset.chat = 'open'
+    // On a phone, focusing would throw the keyboard over half the answers. Let the visitor tap in.
+    const t = touch ? 0 : window.setTimeout(() => inputRef.current?.focus(), 250)
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false)
     window.addEventListener('keydown', onKey)
-    return () => {
-      clearTimeout(t)
-      window.removeEventListener('keydown', onKey)
-    }
-  }, [open])
 
+    // Phones: size the sheet to the *visible* area, so the input stays above the on-screen keyboard.
+    const vv = window.visualViewport
+    const fit = () => {
+      const el = panelRef.current
+      if (!el || !vv) return
+      if (window.matchMedia('(max-width: 639px)').matches) {
+        el.style.height = `${vv.height}px`
+        el.style.top = `${vv.offsetTop}px`
+        el.style.bottom = 'auto'
+      } else {
+        el.style.height = ''
+        el.style.top = ''
+        el.style.bottom = ''
+      }
+    }
+    fit()
+    const raf = requestAnimationFrame(fit)
+    if (vv) {
+      vv.addEventListener('resize', fit)
+      vv.addEventListener('scroll', fit)
+    }
+    return () => {
+      delete document.documentElement.dataset.chat
+      window.clearTimeout(t)
+      cancelAnimationFrame(raf)
+      window.removeEventListener('keydown', onKey)
+      if (vv) {
+        vv.removeEventListener('resize', fit)
+        vv.removeEventListener('scroll', fit)
+      }
+    }
+  }, [open, touch])
+
+  // Keep the conversation in view by scrolling the list itself — never the page.
+  // A new answer is shown from its question downward, so long answers start at their beginning.
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
-  }, [messages, thinking])
+    const list = listRef.current
+    if (!list) return
+    const questions = list.querySelectorAll<HTMLElement>('[data-role="user"]')
+    const lastQuestion = questions[questions.length - 1]
+    const top = lastQuestion ? Math.max(0, lastQuestion.offsetTop - 12) : list.scrollHeight
+    list.scrollTo({ top, behavior: reduce || touch ? 'auto' : 'smooth' })
+  }, [messages, thinking, reduce, touch])
 
   const activeHint = hint ? sectionHints[hint] : null
 
@@ -226,7 +270,7 @@ export default function ChatWidget() {
 
       {/* ---------------- the flying avatar ---------------- */}
       <motion.div
-        drag
+        drag={!touch}
         dragConstraints={boundsRef}
         dragElastic={0.18}
         dragMomentum
@@ -265,7 +309,7 @@ export default function ChatWidget() {
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.94 }}
             aria-label="Open chat with Fahmi's AI"
-            title="Ask my AI (drag me anywhere)"
+            title={touch ? 'Ask my AI' : 'Ask my AI (drag me anywhere)'}
             className="relative flex h-16 w-16 items-center justify-center rounded-full border-2 border-accent bg-surface shadow-2xl shadow-black/40"
           >
             <span className="absolute inset-0 animate-pulse-ring rounded-full border-2 border-accent" aria-hidden />
@@ -284,10 +328,12 @@ export default function ChatWidget() {
           <motion.div
             role="dialog"
             aria-label="Chat with Fahmi's AI"
-            initial={{ opacity: 0, y: 30, scale: 0.94 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 24, scale: 0.96 }}
-            transition={{ type: 'spring', stiffness: 320, damping: 30 }}
+            ref={panelRef}
+            // phones: a short slide-up; scaling a full-screen sheet is what made it stutter
+            initial={touch ? { opacity: 0, y: 24 } : { opacity: 0, y: 30, scale: 0.94 }}
+            animate={touch ? { opacity: 1, y: 0 } : { opacity: 1, y: 0, scale: 1 }}
+            exit={touch ? { opacity: 0, y: 16 } : { opacity: 0, y: 24, scale: 0.96 }}
+            transition={touch ? { duration: 0.2, ease: 'easeOut' } : { type: 'spring', stiffness: 320, damping: 30 }}
             style={{ transformOrigin: 'bottom right' }}
             className={`fixed z-[80] flex flex-col overflow-hidden border-line bg-ink shadow-2xl shadow-black/50 max-sm:inset-0 sm:bottom-5 sm:right-5 sm:rounded-3xl sm:border ${
               large
@@ -296,7 +342,7 @@ export default function ChatWidget() {
             }`}
           >
             {/* header */}
-            <div className="flex items-center justify-between border-b border-line bg-surface px-4 py-3">
+            <div className="flex items-center justify-between border-b border-line bg-surface px-4 py-3 max-sm:pt-[max(0.75rem,env(safe-area-inset-top))]">
               <div className="flex items-center gap-3">
                 <div className="relative">
                   <Avatar size={38} />
@@ -311,7 +357,7 @@ export default function ChatWidget() {
                 {messages.length > 0 && (
                   <button
                     onClick={() => setMessages([])}
-                    className="rounded-lg p-2 text-muted transition hover:bg-raised hover:text-bright"
+                    className="rounded-lg p-2 text-muted transition hover:bg-raised hover:text-bright max-sm:p-3"
                     aria-label="Start over"
                     title="Start over"
                   >
@@ -320,14 +366,14 @@ export default function ChatWidget() {
                 )}
                 <button
                   onClick={() => setLarge((l) => !l)}
-                  className="hidden rounded-lg p-2 text-muted transition hover:bg-raised hover:text-bright sm:block"
+                  className="hidden rounded-lg p-2 text-muted transition hover:bg-raised hover:text-bright max-sm:p-3 sm:block"
                   aria-label={large ? 'Shrink chat' : 'Expand chat'}
                 >
                   {large ? <Minimize2 size={15} /> : <Maximize2 size={15} />}
                 </button>
                 <button
                   onClick={() => setOpen(false)}
-                  className="rounded-lg p-2 text-muted transition hover:bg-raised hover:text-bright"
+                  className="rounded-lg p-2 text-muted transition hover:bg-raised hover:text-bright max-sm:p-3"
                   aria-label="Close chat"
                 >
                   <X size={17} />
@@ -336,7 +382,7 @@ export default function ChatWidget() {
             </div>
 
             {/* messages */}
-            <div className="thin-scrollbar flex-1 overflow-y-auto px-4 py-5">
+            <div ref={listRef} className="thin-scrollbar relative flex-1 overflow-y-auto overscroll-contain px-4 py-5">
               {messages.length === 0 ? (
                 <div className="flex h-full flex-col items-center justify-center text-center">
                   <Avatar size={84} />
@@ -363,7 +409,7 @@ export default function ChatWidget() {
                 <div className="space-y-5">
                   {messages.map((m) =>
                     m.role === 'user' ? (
-                      <div key={m.id} className="flex justify-end">
+                      <div key={m.id} data-role="user" className="flex justify-end">
                         <div className="max-w-[85%] rounded-2xl rounded-br-md bg-accent/15 px-4 py-2.5 text-[15px] text-bright">
                           {m.text}
                         </div>
@@ -404,13 +450,12 @@ export default function ChatWidget() {
                       </div>
                     </div>
                   )}
-                  <div ref={bottomRef} />
                 </div>
               )}
             </div>
 
             {/* chips + input */}
-            <div className="border-t border-line bg-surface px-3 pb-3 pt-2.5">
+            <div className="border-t border-line bg-surface px-3 pb-3 pt-2.5 max-sm:pb-[max(0.75rem,env(safe-area-inset-bottom))]">
               {messages.length > 0 && (
                 <div className="no-scrollbar mb-2.5 flex gap-1.5 overflow-x-auto">
                   {quickTopics.map((t) => (
@@ -439,7 +484,9 @@ export default function ChatWidget() {
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Ask me anything…"
                   maxLength={500}
-                  className="min-w-0 flex-1 bg-transparent text-[15px] text-bright outline-none placeholder:text-muted"
+                  enterKeyHint="send"
+                  autoComplete="off"
+                  className="min-w-0 flex-1 bg-transparent text-base text-bright outline-none placeholder:text-muted sm:text-[15px]"
                   aria-label="Ask a question"
                 />
                 <button

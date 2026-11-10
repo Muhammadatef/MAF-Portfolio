@@ -15,7 +15,7 @@ const sans = Hanken_Grotesk({
 const serif = Instrument_Serif({
   subsets: ['latin'],
   weight: '400',
-  style: ['normal', 'italic'],
+  style: ['italic'], // only ever used for italic emphasis
   variable: '--font-serif',
   display: 'swap',
 })
@@ -23,6 +23,7 @@ const mono = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-mono',
   display: 'swap',
+  preload: false, // small labels only; must not compete with the headline fonts
 })
 
 // Link previews need absolute image URLs. Set NEXT_PUBLIC_SITE_URL if the domain changes.

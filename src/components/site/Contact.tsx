@@ -29,7 +29,8 @@ export default function Contact() {
     <footer id="contact" className="relative overflow-hidden border-t border-line/70 pt-24 sm:pt-32">
       <div
         aria-hidden
-        className="pointer-events-none absolute -bottom-56 left-1/2 h-[480px] w-[900px] -translate-x-1/2 rounded-full bg-accent/15 blur-[130px]"
+        className="glow-accent pointer-events-none absolute -bottom-72 left-1/2 h-[640px] w-[1100px] max-w-[170vw] -translate-x-1/2"
+        style={{ '--glow': 0.2 } as React.CSSProperties}
       />
       <div className="container-x relative">
         <Reveal>

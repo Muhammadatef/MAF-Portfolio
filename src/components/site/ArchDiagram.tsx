@@ -52,13 +52,6 @@ export default function ArchDiagram({ arch, step }: { arch: Architecture; step: 
       aria-label={`Architecture diagram: ${arch.name}. ${arch.steps.map((s) => `${s.title}: ${s.text}`).join(' ')}`}
     >
       <defs>
-        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="4" result="b" />
-          <feMerge>
-            <feMergeNode in="b" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
         <marker id="arrow" viewBox="0 0 8 8" refX="6.5" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
           <path d="M0 0.8 L7 4 L0 7.2" fill="none" stroke="rgb(var(--color-muted))" strokeWidth="1.2" />
         </marker>
@@ -91,9 +84,12 @@ export default function ArchDiagram({ arch, step }: { arch: Architecture; step: 
             />
             {on &&
               [0, 0.5].map((offset) => (
-                <circle key={offset} className="packet" r="3.6" fill="rgb(var(--color-flow))" filter="url(#glow)">
+                // a soft halo drawn as a second circle: far cheaper than a blur filter per frame
+                <g key={offset} className="packet">
+                  <circle r="7" fill="rgb(var(--color-flow) / 0.22)" />
+                  <circle r="3.4" fill="rgb(var(--color-flow))" />
                   <animateMotion dur="1.5s" begin={`${-offset * 1.5}s`} repeatCount="indefinite" path={d} />
-                </circle>
+                </g>
               ))}
           </g>
         )
@@ -117,8 +113,7 @@ export default function ArchDiagram({ arch, step }: { arch: Architecture; step: 
                 width={W + 8}
                 height={H + 8}
                 rx={18}
-                fill="rgb(var(--color-accent) / 0.12)"
-                filter="url(#glow)"
+                fill="rgb(var(--color-accent) / 0.14)"
               />
             )}
             <rect

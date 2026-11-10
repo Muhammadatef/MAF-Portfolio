@@ -144,7 +144,11 @@ const MOVE = [
 ] as const
 
 function Pitch() {
-  const reduce = useReducedMotion()
+  const prefersReduced = useReducedMotion()
+  const ref = useRef<SVGSVGElement>(null)
+  const inView = useInView(ref)
+  // off-screen it is drawn once and left alone, instead of animating forever
+  const reduce = prefersReduced || !inView
   const d = MOVE.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p[0]} ${p[1]}`).join(' ')
   // keyframe times follow distance covered, so the ball stays on the tip of the line
   const dist = MOVE.map((p, i) => (i === 0 ? 0 : Math.hypot(p[0] - MOVE[i - 1][0], p[1] - MOVE[i - 1][1])))
@@ -157,7 +161,7 @@ function Pitch() {
   const loop = { duration: 5.5, repeat: Infinity, repeatDelay: 1.4, ease: 'linear' as const }
 
   return (
-    <svg viewBox="0 0 320 200" className="w-full rounded-xl border border-line bg-raised/50" role="img" aria-label="Animated football pitch showing a passing move that ends with a shot on goal">
+    <svg ref={ref} viewBox="0 0 320 200" className="w-full rounded-xl border border-line bg-raised/50" role="img" aria-label="Animated football pitch showing a passing move that ends with a shot on goal">
       <g fill="none" stroke="rgb(var(--color-line))" strokeWidth="1.2">
         <rect x="6" y="6" width="308" height="188" rx="4" />
         <line x1="160" y1="6" x2="160" y2="194" />
@@ -172,7 +176,8 @@ function Pitch() {
       {[[120, 60], [178, 118], [222, 150], [232, 62], [282, 122]].map((p) => (
         <circle key={p.join()} cx={p[0]} cy={p[1]} r="4.5" fill="rgb(var(--color-muted) / 0.45)" />
       ))}
-      {/* the move */}
+      {/* the move — keyed so leaving the screen genuinely stops the loop */}
+      <g key={reduce ? 'still' : 'live'}>
       <motion.path
         d={d}
         fill="none"
@@ -215,6 +220,7 @@ function Pitch() {
           xG 0.41
         </text>
       </motion.g>
+      </g>
     </svg>
   )
 }

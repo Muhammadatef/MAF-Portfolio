@@ -5,6 +5,43 @@ import { animate, motion, useInView, useReducedMotion } from 'framer-motion'
 
 export const ease = [0.22, 1, 0.36, 1] as const
 
+/** True on phones and other touch-first devices. False during SSR and the first render. */
+export function useCoarse() {
+  const [coarse, setCoarse] = useState(false)
+  useEffect(() => {
+    const m = window.matchMedia('(pointer: coarse), (max-width: 767px)')
+    const on = () => setCoarse(m.matches)
+    on()
+    if (m.addEventListener) m.addEventListener('change', on)
+    return () => {
+      if (m.removeEventListener) m.removeEventListener('change', on)
+    }
+  }, [])
+  return coarse
+}
+
+/**
+ * Pauses every CSS animation inside it while it is off-screen
+ * (see [data-paused] in globals.css), so looping decorations cost nothing when unseen.
+ */
+export function PauseOffscreen({ children, className }: { children: React.ReactNode; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const io = new IntersectionObserver(([e]) => {
+      el.dataset.paused = e.isIntersecting ? 'false' : 'true'
+    })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+  return (
+    <div ref={ref} className={className}>
+      {children}
+    </div>
+  )
+}
+
 /** Fade + rise when scrolled into view. */
 export function Reveal({
   children,
@@ -18,13 +55,16 @@ export function Reveal({
   className?: string
 }) {
   const reduce = useReducedMotion()
+  const coarse = useCoarse()
   return (
     <motion.div
       className={className}
       initial={reduce ? false : { opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.8, delay, ease }}
+      // On phones: show content the moment it enters, quickly, with no stagger.
+      // A fast thumb-scroll should never land on blank space waiting to fade in.
+      viewport={{ once: true, margin: coarse ? '0px 0px 120px 0px' : '-80px' }}
+      transition={coarse ? { duration: 0.4, ease } : { duration: 0.8, delay, ease }}
     >
       {children}
     </motion.div>

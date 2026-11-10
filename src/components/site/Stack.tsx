@@ -1,8 +1,10 @@
 'use client'
 
+import { useRef } from 'react'
+import { useInView } from 'framer-motion'
 import { skills } from '@/data/profile'
 import { orbitRings } from './logos'
-import { Em, Reveal, SectionHeading } from './ui'
+import { Em, PauseOffscreen, Reveal, SectionHeading } from './ui'
 
 // radius as % of the stage, rotation period in seconds
 const rings = [
@@ -12,8 +14,19 @@ const rings = [
 ]
 
 function Orbit() {
+  // 24 logos are heavy markup; mount them only when the section is nearly on screen
+  const ref = useRef<HTMLDivElement>(null)
+  const near = useInView(ref, { once: true, margin: '500px' })
   return (
-    <div className="relative mx-auto aspect-square w-full max-w-[560px]" aria-hidden>
+    <div ref={ref} className="relative mx-auto aspect-square w-full max-w-[560px]" aria-hidden>
+      {near && <OrbitRings />}
+    </div>
+  )
+}
+
+function OrbitRings() {
+  return (
+    <PauseOffscreen className="absolute inset-0">
       {/* core */}
       <div className="absolute left-1/2 top-1/2 flex h-[22%] w-[22%] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-accent/50 bg-surface shadow-[0_0_80px_rgb(var(--color-accent)/0.25)]">
         <span className="font-display text-xl font-semibold text-bright sm:text-2xl">
@@ -63,7 +76,7 @@ function Orbit() {
           </div>
         )
       })}
-    </div>
+    </PauseOffscreen>
   )
 }
 

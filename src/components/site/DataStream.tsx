@@ -19,6 +19,9 @@ export default function DataStream() {
     if (!ctx) return
 
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    // Phones get a lighter scene: fewer lanes and packets, 1x resolution, ~30 fps.
+    const lite = window.matchMedia('(pointer: coarse), (max-width: 767px)').matches
+    const FRAME_MS = lite ? 1000 / 30 : 0
     let w = 0
     let h = 0
     let raf = 0
@@ -36,7 +39,7 @@ export default function DataStream() {
     })
     themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
 
-    const LANES = 18
+    const LANES = lite ? 9 : 18
     const lanes: Lane[] = []
     for (let i = 0; i < LANES; i++) {
       lanes.push({
@@ -48,7 +51,7 @@ export default function DataStream() {
       })
     }
     const particles: Particle[] = []
-    for (let i = 0; i < 64; i++) {
+    for (let i = 0; i < (lite ? 20 : 64); i++) {
       const r = Math.random()
       particles.push({
         lane: Math.floor(Math.random() * LANES),
@@ -60,7 +63,7 @@ export default function DataStream() {
     }
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      const dpr = lite ? 1 : Math.min(window.devicePixelRatio || 1, 2)
       const rect = canvas.getBoundingClientRect()
       w = rect.width
       h = rect.height
@@ -81,6 +84,11 @@ export default function DataStream() {
 
     let last = performance.now()
     const frame = (now: number) => {
+      // skip frames on phones, and do nothing at all while the chat covers the page
+      if (now - last < FRAME_MS - 1 || document.documentElement.dataset.chat === 'open') {
+        if (visible && !reduce) raf = requestAnimationFrame(frame)
+        return
+      }
       const dt = Math.min((now - last) / 1000, 0.05)
       last = now
       const t = now / 1000
@@ -90,7 +98,8 @@ export default function DataStream() {
       ctx.lineWidth = 1
       for (let i = 0; i < lanes.length; i++) {
         ctx.beginPath()
-        for (let x = 0; x <= w + 24; x += 24) {
+        const stepX = lite ? 48 : 24
+        for (let x = 0; x <= w + stepX; x += stepX) {
           const y = laneY(lanes[i], x, t)
           if (x === 0) ctx.moveTo(x, y)
           else ctx.lineTo(x, y)
@@ -111,17 +120,24 @@ export default function DataStream() {
         const head = p.x * w
         const tail = head - p.len
         const c = colors[p.tone]
-        const grad = ctx.createLinearGradient(tail, 0, head, 0)
-        grad.addColorStop(0, `rgba(${c},0)`)
-        grad.addColorStop(1, `rgba(${c},${p.tone === 2 ? 0.5 : 0.85})`)
+        let stroke: string | CanvasGradient
+        if (lite) {
+          stroke = `rgba(${c},${p.tone === 2 ? 0.3 : 0.5})` // flat colour: no gradient object per packet per frame
+        } else {
+          const grad = ctx.createLinearGradient(tail, 0, head, 0)
+          grad.addColorStop(0, `rgba(${c},0)`)
+          grad.addColorStop(1, `rgba(${c},${p.tone === 2 ? 0.5 : 0.85})`)
+          stroke = grad
+        }
         ctx.beginPath()
-        for (let s = 0; s <= 6; s++) {
-          const x = tail + (p.len * s) / 6
+        const segs = lite ? 3 : 6
+        for (let s = 0; s <= segs; s++) {
+          const x = tail + (p.len * s) / segs
           const y = laneY(l, x, t)
           if (s === 0) ctx.moveTo(x, y)
           else ctx.lineTo(x, y)
         }
-        ctx.strokeStyle = grad
+        ctx.strokeStyle = stroke
         ctx.lineWidth = 1.5
         ctx.stroke()
         ctx.beginPath()

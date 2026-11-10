@@ -126,6 +126,38 @@
   }
 }
 
+/* looping decorations stop while off-screen (set by <PauseOffscreen>) */
+[data-paused='true'],
+[data-paused='true'] * {
+  animation-play-state: paused !important;
+}
+
+/* soft colour glow without a blur filter (blur filters are costly to paint on phones) */
+.glow-accent {
+  background: radial-gradient(closest-side, rgb(var(--color-accent) / var(--glow, 0.16)), transparent);
+}
+
+/* Phones: frosted-glass blur is one of the most expensive effects to scroll over. */
+@media (max-width: 767px), (pointer: coarse) {
+  [class*='backdrop-blur'] {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  header[data-scrolled='true'] {
+    background-color: rgb(var(--color-ink) / 0.96) !important;
+  }
+}
+
+/* while the chat is open full-screen on a phone, the page behind must not scroll */
+html[data-chat='open'] {
+  overflow: hidden;
+}
+@media (min-width: 640px) {
+  html[data-chat='open'] {
+    overflow: visible;
+  }
+}
+
 /* typing indicator */
 .typing-dot {
   animation: typing 1s infinite ease-in-out;

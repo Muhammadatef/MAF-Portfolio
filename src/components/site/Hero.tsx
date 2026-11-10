@@ -35,6 +35,10 @@ export default function Hero() {
     return () => clearInterval(id)
   }, [])
 
+  // the floating logo chips are a desktop flourish; phones never build them
+  const [wide, setWide] = useState(false)
+  useEffect(() => setWide(window.matchMedia('(min-width: 640px) and (pointer: fine)').matches), [])
+
   // portrait tilt
   const mx = useMotionValue(0)
   const my = useMotionValue(0)
@@ -47,7 +51,7 @@ export default function Hero() {
         className="inline-block"
         initial={reduce ? false : { y: '110%' }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.9, delay: base + i * 0.07, ease }}
+        transition={{ duration: 0.7, delay: base + i * 0.05, ease }}
       >
         {w}&nbsp;
       </motion.span>
@@ -60,7 +64,7 @@ export default function Hero() {
       <DataStream />
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-40 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-accent/10 blur-[120px]"
+        className="glow-accent pointer-events-none absolute -top-56 left-1/2 h-[640px] w-[1000px] max-w-[160vw] -translate-x-1/2"
       />
 
       <div className="container-x relative grid flex-1 items-center gap-12 py-14 lg:grid-cols-[1.25fr_0.75fr] lg:gap-8">
@@ -80,15 +84,15 @@ export default function Hero() {
           </motion.div>
 
           <h1 className="font-display text-[15vw] font-semibold leading-[0.95] tracking-[-0.035em] text-bright sm:text-7xl lg:text-[5.6rem]">
-            <span className="block">{line1.map((w, i) => word(w, i, 0.1))}</span>
+            <span className="block">{line1.map((w, i) => word(w, i, 0))}</span>
             <span className="block">
-              {line2.map((w, i) => word(w, i, 0.32))}
+              {line2.map((w, i) => word(w, i, 0.15))}
               <span className="inline-block overflow-hidden pb-[0.12em] align-bottom">
                 <motion.em
                   className="inline-block pr-2 font-serif font-normal italic text-accent"
                   initial={reduce ? false : { y: '110%' }}
                   animate={{ y: 0 }}
-                  transition={{ duration: 1, delay: 0.42, ease }}
+                  transition={{ duration: 0.7, delay: 0.2, ease }}
                 >
                   trust.
                 </motion.em>
@@ -96,10 +100,10 @@ export default function Hero() {
             </span>
           </h1>
 
+          {/* no fade-in here: this paragraph is the largest text on a phone screen, and it
+              should be readable from the very first paint */}
           <motion.p
-            initial={reduce ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.65, ease }}
+            initial={false}
             className="mt-7 max-w-xl text-lg leading-relaxed text-body"
           >
             I&apos;m <span className="font-semibold text-bright">{profile.name}</span> — Fahmi. I own
@@ -110,7 +114,7 @@ export default function Hero() {
           <motion.div
             initial={reduce ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
             className="mt-5 flex h-7 items-center gap-2 font-mono text-sm text-muted"
           >
             <span className="text-flow">▸</span>
@@ -133,7 +137,7 @@ export default function Hero() {
           <motion.div
             initial={reduce ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.9, ease }}
+            transition={{ duration: 0.6, delay: 0.35, ease }}
             className="mt-9 flex flex-wrap items-center gap-3"
           >
             <a href="#work" className="btn-primary">
@@ -152,7 +156,7 @@ export default function Hero() {
         <motion.div
           initial={reduce ? false : { opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.1, delay: 0.3, ease }}
+          transition={{ duration: 0.7, delay: 0.15, ease }}
           className="relative mx-auto w-full max-w-[300px] sm:max-w-[360px]"
           style={{ perspective: 1000 }}
           onMouseMove={(e) => {
@@ -167,7 +171,8 @@ export default function Hero() {
         >
           <div
             aria-hidden
-            className="absolute inset-6 rounded-[2.5rem] bg-accent/25 blur-3xl"
+            className="glow-accent absolute -inset-10"
+            style={{ '--glow': 0.3 } as React.CSSProperties}
           />
           <motion.div
             style={{ rotateX: reduce ? 0 : rx, rotateY: reduce ? 0 : ry, transformStyle: 'preserve-3d' }}
@@ -176,7 +181,10 @@ export default function Hero() {
             <div className="relative overflow-hidden rounded-[2rem] border border-accent/40 bg-surface p-2 shadow-2xl shadow-black/40">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/avatar.jpg"
+                src="/avatar.webp"
+                srcSet="/avatar-480.webp 480w, /avatar.webp 720w"
+                sizes="(max-width: 640px) 300px, 360px"
+                decoding="async"
                 alt="Pixel-art portrait of Mohamed Atef Fahmy surrounded by his interests: data pipelines, piano, anime, meditation, books and the gym"
                 width={720}
                 height={720}
@@ -191,12 +199,12 @@ export default function Hero() {
               </div>
             </div>
 
-            {floating.map((f) => {
+            {wide && floating.map((f) => {
               const l = logos[f.key]
               return (
                 <div
                   key={f.key}
-                  className={`absolute ${f.className} hidden animate-floaty sm:block`}
+                  className={`absolute ${f.className} animate-floaty`}
                   style={{ animationDelay: `${f.delay}s`, transform: 'translateZ(60px)' }}
                 >
                   <div className="flex items-center gap-2 rounded-2xl border border-line bg-surface/90 px-3 py-2 shadow-xl shadow-black/30 backdrop-blur">
@@ -214,7 +222,7 @@ export default function Hero() {
       <motion.div
         initial={reduce ? false : { opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, delay: 1.05, ease }}
+        transition={{ duration: 0.6, delay: 0.4, ease }}
         className="relative border-t border-line/70 bg-ink/40 backdrop-blur"
       >
         <dl className="container-x grid grid-cols-2 gap-y-6 py-7 sm:grid-cols-4">

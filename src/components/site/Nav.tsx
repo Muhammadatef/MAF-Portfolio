@@ -54,6 +54,7 @@ export default function Nav() {
         style={{ scaleX: progress }}
       />
       <header
+        data-scrolled={scrolled}
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
           scrolled ? 'border-b border-line/70 bg-ink/75 backdrop-blur-xl' : 'border-b border-transparent'
         }`}
