@@ -5,6 +5,7 @@ import { AnimatePresence, motion, useInView, useReducedMotion } from 'framer-mot
 import { ArrowUpRight, Play, Square } from 'lucide-react'
 import { articles, profile } from '@/data/profile'
 import { Em, Reveal, SectionHeading, Spotlight } from './ui'
+import { armAudio, playNote, unlockAudio } from './audio'
 
 /* ------------------------------------------------------------------ */
 /* Piano — a playable two-octave keyboard (Web Audio, no samples)      */
@@ -25,57 +26,22 @@ const PHRASE: [number, number][] = [
 ]
 
 function Piano() {
-  const ctxRef = useRef<AudioContext | null>(null)
   const timers = useRef<number[]>([])
   const [down, setDown] = useState<Record<number, boolean>>({})
   const [playing, setPlaying] = useState(false)
   const boxRef = useRef<HTMLDivElement>(null)
   const inView = useInView(boxRef)
 
-  const tone = useCallback((midi: number, length = 1.4) => {
-    try {
-      // One AudioContext for the whole page, kept on window. Browsers cap how many
-      // a page may open (about six), so creating one per mount eventually goes silent.
-      const w = window as any
-      if (!w.__mafAudio || w.__mafAudio.state === 'closed') {
-        const AC = window.AudioContext || w.webkitAudioContext
-        w.__mafAudio = new AC()
-      }
-      const ctx: AudioContext = w.__mafAudio
-      ctxRef.current = ctx
-      // 'suspended' (autoplay policy, tab switch) or Safari's 'interrupted'
-      if (ctx.state !== 'running') ctx.resume()
-      const f = 440 * Math.pow(2, (midi - 69) / 12)
-      const now = ctx.currentTime
-      const gain = ctx.createGain()
-      gain.gain.setValueAtTime(0.0001, now)
-      gain.gain.exponentialRampToValueAtTime(0.22, now + 0.012)
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + length)
-      gain.connect(ctx.destination)
-      const partials: [OscillatorType, number, number][] = [['triangle', 1, 1], ['sine', 2, 0.28], ['sine', 3, 0.08]]
-      partials.forEach(([type, mult, vol]) => {
-        const o = ctx.createOscillator()
-        const g = ctx.createGain()
-        o.type = type
-        o.frequency.value = f * mult
-        g.gain.value = vol
-        o.connect(g)
-        g.connect(gain)
-        o.start(now)
-        o.stop(now + length + 0.05)
-      })
-    } catch {
-      /* audio unavailable — keys still animate */
-    }
-  }, [])
+  // every gesture on the page keeps the audio engine unlocked
+  useEffect(() => armAudio(), [])
 
   const press = useCallback(
     (midi: number, ms = 220) => {
-      tone(midi)
+      playNote(midi)
       setDown((d) => ({ ...d, [midi]: true }))
       window.setTimeout(() => setDown((d) => ({ ...d, [midi]: false })), ms)
     },
-    [tone]
+    []
   )
 
   const stop = useCallback(() => {
@@ -86,6 +52,7 @@ function Piano() {
 
   const playPhrase = () => {
     if (playing) return stop()
+    unlockAudio()
     setPlaying(true)
     const beat = 300
     let at = 0
@@ -122,6 +89,7 @@ function Piano() {
             <button
               key={m}
               onPointerDown={() => press(m)}
+              onClick={(e) => e.detail === 0 && press(m)}
               aria-label={`Piano key ${m}`}
               className={`h-full flex-1 rounded-b-md border border-black/10 transition-all duration-100 ${
                 down[m] ? 'translate-y-[3px] bg-accent' : 'bg-[#f6f1e6] hover:bg-white'
@@ -132,6 +100,7 @@ function Piano() {
             <button
               key={b.midi}
               onPointerDown={() => press(b.midi)}
+              onClick={(e) => e.detail === 0 && press(b.midi)}
               aria-label={`Piano key ${b.midi}`}
               style={{ left: `calc(${(b.after + 1) * whiteW}% - ${whiteW * 0.3}%)`, width: `${whiteW * 0.6}%` }}
               className={`absolute top-0 h-[60%] rounded-b-md transition-all duration-100 ${
