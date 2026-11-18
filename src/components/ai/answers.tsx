@@ -426,7 +426,7 @@ const routes: { topic: TopicKey; words: string[] }[] = [
   },
   {
     topic: 'projects',
-    words: ['project', 'kakashi', 'epl', 'marsad', 'arsenal', 'gunners', 'synthetic', 'clickstream', 'built', 'build', 'github', 'open source', 'portfolio'],
+    words: ['project', 'kakashi', 'epl', 'monitoring', 'arsenal', 'gunners', 'synthetic', 'clickstream', 'built', 'build', 'github', 'open source', 'portfolio'],
   },
   {
     topic: 'experience',
