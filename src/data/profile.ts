@@ -30,7 +30,7 @@ export const profile = {
   about: [
     "I'm Fahmi — a Senior Data Engineer based in Abu Dhabi with 6+ years of experience turning messy, large-scale data into systems governments and enterprises rely on.",
     'Today at the Statistics Centre – Abu Dhabi (SCAD) I own 95+ production pipelines ingesting price data from 75+ websites and APIs, feeding the national Consumer Price Index — alongside ML infrastructure: MLflow tracking, a deep-learning synthetic data framework and LLM agents.',
-    'Before that, at e& (Etisalat), I built real-time pipelines on Kafka, Kafka Streams, Spark Streaming and Redis, and re-engineered a Spark/Scala segmentation job from 16 hours to 2 hours. It fed an AI customer-segmentation product used by external clients such as Careem and Amazon.',
+    'Before that, at e& (Etisalat), I built real-time pipelines on Kafka, Kafka Streams, Spark Streaming and Redis, and re-engineered a Spark/Scala segmentation job from 16 hours to 2 hours. It fed an AI customer-segmentation product used by external brands.',
     "I'm a why-first learner: I care about the reasoning behind systems, not just the mechanics. Off the keyboard you'll find me at the piano learning Chopin, meditating, watching Arsenal each weekend, or writing on Medium.",
   ],
   fun: [
@@ -63,14 +63,14 @@ export const experience = [
     period: 'Sep 2025 — Present',
     headline: 'The pipelines behind a national price index.',
     highlights: [
-      'Own 95+ daily production pipelines (Python, Scrapy, Playwright, Airflow) ingesting price data from 75+ websites and APIs into Presto/Trino and MySQL, feeding the national Consumer Price Index and retail price indices',
-      'Built MARSAD solo in 3 weeks: a near-real-time pipeline monitoring platform (FastAPI, Vue, MySQL, Docker) deployed through GitHub Actions to OpenShift, covering data quality, price outlier detection and failure tracking — now 130+ users across teams',
+      'Own 95+ daily production pipelines (Python, Airflow) collecting price data from 75+ public websites and APIs, feeding the national Consumer Price Index and retail price indices',
+      'Built a near-real-time pipeline monitoring platform solo in 3 weeks (FastAPI, Vue, Docker, CI/CD), covering data quality, price outlier detection and failure tracking — now 130+ users across teams',
       'Enforce data quality with pytest suites on the API layer and data-contract validation against the contract agreed with the price and income statistics team',
       'Build ML infrastructure next to the pipelines: experiment, parameter and model tracking in MLflow, and a synthetic data framework (SDV, CTGAN, TVAE, CopulaGAN) so teams can develop on privacy-safe data',
       "Build an LLM agent (LangGraph, DSPy) that adapts scrapers when a website's structure changes, across static HTML and JavaScript-rendered pages, cutting manual pipeline repair",
       'Work on Databricks (Delta Lake, Unity Catalog) for platform modernisation, with Business and Statistics stakeholders in Agile',
     ],
-    stack: ['Python', 'Airflow', 'Scrapy', 'Playwright', 'Trino', 'MySQL', 'FastAPI', 'MLflow', 'LangGraph', 'OpenShift'],
+    stack: ['Python', 'Airflow', 'Scrapy', 'Playwright', 'SQL', 'FastAPI', 'MLflow', 'LangGraph'],
   },
   {
     role: 'Senior Data Engineer',
@@ -83,7 +83,7 @@ export const experience = [
     highlights: [
       'Built real-time pipelines on Kafka, Kafka Streams and Spark Streaming, using Redis in the real-time path',
       'Re-engineered the Spark/Scala ETL framework behind customer segmentation, cutting runtime from 16 hours to 2 hours (87.5%) across tens of millions of customer records',
-      'Designed the data pipeline feeding a monetised AI customer-segmentation platform — external clients such as Careem and Amazon used it to choose audience segments for SMS and WhatsApp campaigns',
+      'Designed the data pipeline feeding a monetised AI customer-segmentation platform that external brands used to choose audience segments for SMS and WhatsApp campaigns',
       'Ran large batch workloads on HDFS with Spark, Hive, Impala and Presto; tuned Hive with partitioning, bucketing and query-plan analysis, and used Databricks with Delta Lake for versioned ingestion',
       'Built a custom ETL framework with dynamic Scala compilation, so analysts could define new pipeline logic without engineering support',
     ],
@@ -183,18 +183,18 @@ export const architectures: Architecture[] = [
     metrics: [
       { value: '95+', label: 'daily pipelines' },
       { value: '75+', label: 'websites & APIs' },
-      { value: '130+', label: 'MARSAD users' },
+      { value: '130+', label: 'monitoring users' },
     ],
-    tech: ['Python', 'Scrapy', 'Playwright', 'Airflow', 'Trino', 'MySQL', 'FastAPI', 'Vue', 'OpenShift', 'LangGraph', 'DSPy'],
+    tech: ['Python', 'Airflow', 'Web scraping', 'SQL', 'Data contracts', 'pytest', 'LLM agents'],
     nodes: [
-      { id: 'airflow', label: 'Airflow', sub: 'daily schedules', x: C[1], y: R[0], tone: 'ops' },
-      { id: 'sources', label: '75+ sites & APIs', sub: 'retail prices', x: C[0], y: R[1], tone: 'source' },
-      { id: 'scrapers', label: '95+ pipelines', sub: 'Scrapy · Playwright', x: C[1], y: R[1], tone: 'process' },
-      { id: 'store', label: 'Trino · MySQL', sub: 'price warehouse', x: C[2], y: R[1], tone: 'store' },
+      { id: 'airflow', label: 'Scheduler', sub: 'daily runs', x: C[1], y: R[0], tone: 'ops' },
+      { id: 'sources', label: '75+ sources', sub: 'public prices', x: C[0], y: R[1], tone: 'source' },
+      { id: 'scrapers', label: '95+ pipelines', sub: 'collectors', x: C[1], y: R[1], tone: 'process' },
+      { id: 'store', label: 'Price warehouse', sub: 'SQL', x: C[2], y: R[1], tone: 'store' },
       { id: 'contracts', label: 'Data contracts', sub: 'pytest · validation', x: C[3], y: R[1], tone: 'process' },
       { id: 'cpi', label: 'Price index (CPI)', sub: 'national statistics', x: C[4], y: R[1], tone: 'serve' },
-      { id: 'agent', label: 'LLM repair agent', sub: 'LangGraph · DSPy', x: C[0], y: R[2], tone: 'ai' },
-      { id: 'marsad', label: 'MARSAD', sub: 'quality · outliers', x: C[2], y: R[2], tone: 'ops' },
+      { id: 'agent', label: 'LLM repair agent', sub: 'adapts collectors', x: C[0], y: R[2], tone: 'ai' },
+      { id: 'monitor', label: 'Monitoring', sub: 'quality · outliers', x: C[2], y: R[2], tone: 'ops' },
     ],
     edges: [
       { from: 'airflow', to: 'scrapers' },
@@ -202,15 +202,15 @@ export const architectures: Architecture[] = [
       { from: 'scrapers', to: 'store' },
       { from: 'store', to: 'contracts' },
       { from: 'contracts', to: 'cpi' },
-      { from: 'store', to: 'marsad' },
+      { from: 'store', to: 'monitor' },
       { from: 'sources', to: 'agent', dashed: true },
       { from: 'agent', to: 'scrapers', dashed: true },
     ],
     steps: [
-      { title: 'Collect', text: 'Airflow triggers 95+ pipelines every day. Scrapy handles static pages, Playwright the JavaScript-rendered ones.', nodes: ['airflow', 'sources', 'scrapers'] },
-      { title: 'Land', text: 'Price observations land in Presto/Trino and MySQL, ready for the statisticians.', nodes: ['scrapers', 'store'] },
+      { title: 'Collect', text: 'A scheduler triggers 95+ pipelines every day, covering both static and JavaScript-rendered pages.', nodes: ['airflow', 'sources', 'scrapers'] },
+      { title: 'Land', text: 'Price observations land in a SQL warehouse, ready for the statisticians.', nodes: ['scrapers', 'store'] },
       { title: 'Prove', text: 'pytest suites and data-contract validation check every delivery against the contract agreed with the price statistics team.', nodes: ['store', 'contracts', 'cpi'] },
-      { title: 'Watch', text: 'MARSAD — built solo in 3 weeks — tracks quality, price outliers and failures in near real time for 130+ users.', nodes: ['store', 'marsad'] },
+      { title: 'Watch', text: 'A monitoring platform I built solo in 3 weeks tracks quality, price outliers and failures in near real time for 130+ users.', nodes: ['store', 'monitor'] },
       { title: 'Heal', text: "When a website changes its structure, an LLM agent adapts the scraper instead of waiting for a manual fix.", nodes: ['sources', 'agent', 'scrapers'] },
     ],
   },
@@ -224,11 +224,11 @@ export const architectures: Architecture[] = [
     metrics: [
       { value: '16h → 2h', label: 'job runtime' },
       { value: '87.5%', label: 'faster' },
-      { value: '10M+', label: 'customer records' },
+      { value: 'Batch + live', label: 'two data paths' },
     ],
     tech: ['Scala', 'Spark', 'Kafka', 'Kafka Streams', 'Spark Streaming', 'Redis', 'Hive', 'Impala', 'Presto', 'HDFS', 'Delta Lake'],
     nodes: [
-      { id: 'hdfs', label: 'HDFS · Hive', sub: '10M+ customer rows', x: C[0], y: R[0], tone: 'source' },
+      { id: 'hdfs', label: 'HDFS · Hive', sub: 'customer data', x: C[0], y: R[0], tone: 'source' },
       { id: 'etl', label: 'Spark/Scala ETL', sub: '16h → 2h', x: C[1], y: R[0], tone: 'process' },
       { id: 'segments', label: 'Segment tables', sub: 'Hive · Impala · Presto', x: C[2], y: R[0], tone: 'store' },
       { id: 'rules', label: 'Analyst logic', sub: 'dynamic Scala compile', x: C[1], y: R[1], tone: 'ops' },
@@ -251,11 +251,11 @@ export const architectures: Architecture[] = [
       { from: 'platform', to: 'campaigns' },
     ],
     steps: [
-      { title: 'Batch source', text: 'Tens of millions of customer records sit on HDFS behind Hive, tuned with partitioning, bucketing and query-plan analysis.', nodes: ['hdfs', 'etl'] },
+      { title: 'Batch source', text: 'Customer data sits on HDFS behind Hive, tuned with partitioning, bucketing and query-plan analysis.', nodes: ['hdfs', 'etl'] },
       { title: 'The 2-hour job', text: 'I re-engineered the Spark/Scala framework behind segmentation: 16 hours down to 2. That is 87.5% of the runtime gone.', nodes: ['hdfs', 'etl', 'segments'] },
       { title: 'Self-serve logic', text: 'Dynamic Scala compilation lets analysts define new pipeline logic without waiting on engineering.', nodes: ['rules', 'etl'] },
       { title: 'Real-time path', text: 'Kafka, Kafka Streams and Spark Streaming process live events, with Redis serving the hot path.', nodes: ['events', 'kafka', 'streams', 'redis'] },
-      { title: 'The product', text: 'Both paths feed an AI segmentation platform. External clients such as Careem and Amazon used it to pick audiences for SMS and WhatsApp campaigns.', nodes: ['segments', 'redis', 'platform', 'campaigns'] },
+      { title: 'The product', text: 'Both paths feed an AI segmentation platform. External brands used it to pick audiences for SMS and WhatsApp campaigns.', nodes: ['segments', 'redis', 'platform', 'campaigns'] },
     ],
   },
   {
@@ -684,7 +684,7 @@ export const achievements = [
   },
   {
     stat: '130+',
-    title: 'MARSAD: solo, 3 weeks, 130+ users',
+    title: 'Monitoring platform: solo, 3 weeks, 130+ users',
     organization: 'Statistics Centre – Abu Dhabi',
     year: '2026',
     description:
@@ -696,7 +696,7 @@ export const achievements = [
     organization: 'e& (Etisalat)',
     year: '2025',
     description:
-      'Designed the pipeline feeding a monetised AI customer-segmentation platform used by external clients such as Careem and Amazon',
+      'Designed the pipeline feeding a monetised AI customer-segmentation platform used by external brands',
   },
   {
     stat: '40%',
